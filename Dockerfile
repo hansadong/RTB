@@ -1,3 +1,3 @@
-FROM openjdk:21-jdk-slim
+FROM openjdk:21
 ADD /build/libs/*.jar demo.jar
-ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-jar","/demo.jar"]
+ENTRYPOINT ["java","-jar","/demo.jar"]
