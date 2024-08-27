@@ -65,5 +65,6 @@ jobs:
         key: ${{ secrets.KEY }}
         script: |
           sudo docker rm -f $(docker ps -qa)
+          sudo docker info
           sudo docker pull hansadong_demo:latest
           sudo docker run -d -p 8080:8080 hansadong_demo
