@@ -50,11 +50,11 @@ jobs:
         password: ${{ secrets.DOCKER_PWD }}
 
     - name: Build and push
-      uses: docker/build-push-action@v6
+      uses: docker/build-push-action@v4
       with:
         context: .
         push: true
-        tags: hansadong/hsd_demo:latest
+        tags: ${{ secrets.DOCKER_REPO }}:latest
 
     - name: Deploy to server
       uses: appleboy/ssh-action@master
@@ -64,6 +64,6 @@ jobs:
         username: ubuntu
         key: ${{ secrets.KEY }}
         script: |
-          sudo docker rm -f $(docker ps -qa)
-          sudo docker pull --no-cache hsd_demo:latest
-          sudo docker run -d -p 8080:8080 hsd_demo
+          sudo docker rm -f demo-container
+          sudo docker pull ${{ secrets.DOCKER_REPO }}:latest
+          sudo docker run -d --name demo-container -p 8080:8080 ${{ secrets.DOCKER_REPO }}:latest
