@@ -8,6 +8,6 @@ public class MainController {
 
     @GetMapping("/main")
     public String index() {
-        return "양경운 하이 박찬민 하이 ";
+        return "Hello World!";
     }
 }
