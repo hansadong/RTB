@@ -8,6 +8,6 @@ public class MainController {
 
     @GetMapping("/main")
     public String index() {
-        return "Hello World!";
+        return "Hello World! build2";
     }
 }
