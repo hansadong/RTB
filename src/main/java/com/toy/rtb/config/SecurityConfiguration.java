@@ -1,9 +1,6 @@
 package com.toy.rtb.config;
 
 import com.toy.rtb.filter.JwtAuthTokenFilter;
-import com.toy.rtb.handler.JwtAuthEntryPoint;
-import com.toy.rtb.service.member.MemberService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,11 +12,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfiguration {
-    @Autowired
-    private JwtAuthEntryPoint unauthorizedHandler;
-
-    @Autowired
-    private MemberService memberService;
+//    @Autowired
+//    private JwtAuthEntryPoint unauthorizedHandler;
+//
+//    @Autowired
+//    private MemberService memberService;
 
     @Bean
     public JwtAuthTokenFilter authenticationJwtTokenFilter() {

@@ -1,6 +1,5 @@
 package com.toy.rtb.filter;
 
-import com.toy.rtb.service.member.MemberService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,8 +15,8 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
 //    @Autowired
 //    private JwtUtil jwtUtil;
 
-    @Autowired
-    private MemberService memberService;
+//    @Autowired
+//    private MemberService memberService;
 
     @Autowired
     private AuthenticationManager authenticationManager;

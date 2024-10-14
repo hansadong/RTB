@@ -1,3 +1,31 @@
 spring:
   application:
     name: demo
+  datasource:
+    url: ENC(r7DeDRPIge7Ba1v9oEjVrg7VNE85HMh8LdZzkygUXYwD+AUNP54vBw==)
+    username: ENC(lD3noCnyEHblIlNcerZsnw==)
+    password: ENC(9dg6s6c8ejT9V30wrvxLCrXvNABp1BiJ)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  hikari:
+    maximum-pool-size: 10
+    minimum-idle: 5
+    idle-timeout: 30000
+    connection-timeout: 20000
+    pool-name: HikariCP
+  jpa:
+    hibernate:
+      ddl-auto: update  # 개발 시에는 'update', 배포 시에는 'validate' 또는 'none' 권장
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+jwt:
+  secret:
+  expirationMs: 86400000
+
+jasypt:
+  encryptor:
+    bean: jasyptEncryptor
+    password: ${ENCRYPT_KEY}
