@@ -3,12 +3,9 @@ package com.toy.rtb.service.member;
 import com.toy.rtb.model.Member;
 import com.toy.rtb.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-import java.util.stream.Collectors;
-
+@Service
 public class MemberServiceImpl implements MemberService {
     @Autowired
     private MemberRepository memberRepository;
