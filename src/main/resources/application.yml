@@ -2,9 +2,9 @@ spring:
   application:
     name: demo
   datasource:
-    url: ENC(rPGw/iQ9wALLOGW5RKJrT52sUAJH8CR0NCPD07BB5RMtnh1IQTbgRnMRJdwUu9fcs260HwV+Y8/k228PiJO4LQ==)
-    username: ENC(GCcMZfsMsU7pAWj7GkSqp4GaANsm6QARbG6dr5w5n10NGRZofv5HNx8o9ML8In7B)
-    password: ENC(XA+NG8Ul5oiaoZjb85ZyQ6PwnzF7S1KR9mELCvks7/OtgKdcJ8PssjIJm7KfBMx9)
+    url: ENC(ki4q9yoDRaOJncLlnDruEhTaXYjLn9yXz19CScNzIBc8G61ortmYqcIxvna3RQqtUNwURpsMjS5FvK9WSwmWVM5W8vY7hzbFxUgCR9+FCTZC4gE46RpCPQ==)
+    username: ENC(+y0uFvdLuGLqjuMMGHWq7Q==)
+    password: ENC(ZwaciOYqcfMDDDKaDwMWfG8JBghLgvLM)
     driver-class-name: com.mysql.cj.jdbc.Driver
   hikari:
     maximum-pool-size: 10
