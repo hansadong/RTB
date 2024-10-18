@@ -57,4 +57,4 @@ jobs:
           echo "${{ secrets.DOCKER_PWD }}" | sudo docker login -u "${{ secrets.DOCKER_NAME }}" --password-stdin
           sudo docker rm -f rtb-container
           sudo docker pull ${{ secrets.DOCKER_REPO }}:latest
-          sudo docker run -e ENCRYPT_KEY=${{ secrets.ENCRYPT_KEY }} -d --name rtb-container -p 8080:8080 ${{ secrets.DOCKER_REPO }}:latest
+          sudo docker run -e ENCRYPT_KEY=${{ secrets.ENCRYPT_KEY }} TZ=Asia/Seoul -d --name rtb-container -p 8080:8080 ${{ secrets.DOCKER_REPO }}:latest
