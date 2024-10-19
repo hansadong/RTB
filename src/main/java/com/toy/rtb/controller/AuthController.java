@@ -1,5 +1,6 @@
 package com.toy.rtb.controller;
 
+import com.toy.rtb.dto.JwtResponseDTO;
 import com.toy.rtb.dto.SignupRequestDTO;
 import com.toy.rtb.model.Member;
 import com.toy.rtb.service.member.MemberService;
@@ -66,6 +67,8 @@ public class AuthController {
         member.setMemberPwd(encodedPassword);
         memberService.saveMember(member);
 
-        return ResponseEntity.ok("User registered successfully!");
+        JwtResponseDTO jwtResponseDTO = new JwtResponseDTO("test","test","test");
+
+        return ResponseEntity.ok(jwtResponseDTO);
     }
 }
