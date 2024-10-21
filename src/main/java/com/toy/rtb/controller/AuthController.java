@@ -6,6 +6,8 @@ import com.toy.rtb.dto.SignupRequestDTO;
 import com.toy.rtb.model.Member;
 import com.toy.rtb.service.member.MemberService;
 import com.toy.rtb.util.JwtUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     @Autowired
     private AuthenticationManager authenticationManager;
 
@@ -37,6 +41,8 @@ public class AuthController {
     // 로그인 요청 처리
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(LoginRequestDTO loginRequest) {
+        logger.info("LoginRequestDTO : {}, {}", loginRequest.getMemberId(), loginRequest.getMemberPwd());
+
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
