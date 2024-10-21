@@ -1,9 +1,7 @@
 package com.toy.rtb.model;
 
 import jakarta.persistence.*;
-import lombok.Cleanup;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
@@ -20,4 +18,8 @@ public class Member {
 
     @Column(nullable = false)
     private String memberPwd;
+
+    // 권한 설정
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    private Set<String> roles;
 }

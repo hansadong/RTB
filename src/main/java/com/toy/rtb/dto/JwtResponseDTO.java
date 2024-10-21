@@ -8,7 +8,6 @@ import lombok.*;
 @Data
 @AllArgsConstructor
 public class JwtResponseDTO {
-    private String grantType;
     private String accessToken;
-    private String refreshToken;
+    private String username;
 }
