@@ -1,7 +1,7 @@
 package com.toy.rtb.service.member;
 
-import com.toy.rtb.model.Member;
-import com.toy.rtb.repository.MemberRepository;
+import com.toy.rtb.model.member.Member;
+import com.toy.rtb.repository.member.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;

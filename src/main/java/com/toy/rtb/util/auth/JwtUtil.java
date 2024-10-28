@@ -1,4 +1,4 @@
-package com.toy.rtb.util;
+package com.toy.rtb.util.auth;
 
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
@@ -7,23 +7,28 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.Map;
 
 @Component
 public class JwtUtil {
     private Logger logger = LoggerFactory.getLogger(getClass());
+
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    @Value("${jwt.expirationMs}")
-    private int jwtExpirationMs;
+    // 토큰 생성
+    public String generateToken(String memberId, long expirationTimeInMs, Map<String, Object> claims) {
+        return createToken(claims, memberId, expirationTimeInMs);
+    }
 
     // 토큰 생성
-    public String generateJwtToken(String memberId) {
+    private String createToken(Map<String, Object> claims, String memberId, long expirationTimeInMs) {
         return Jwts.builder()
+                .setClaims(claims)
                 .setSubject(memberId)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTimeInMs))
+                .signWith(SignatureAlgorithm.HS256, jwtSecret)
                 .compact();
     }
 

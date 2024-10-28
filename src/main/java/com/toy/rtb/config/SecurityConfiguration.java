@@ -15,11 +15,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfiguration {
-//    @Autowired
-//    private JwtAuthEntryPoint unauthorizedHandler;
-//
-//    @Autowired
-//    private MemberService memberService;
 
     @Bean
     public JwtAuthTokenFilter authenticationJwtTokenFilter() {
@@ -43,7 +38,8 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 // 권한 설정
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll() // 모든 요청 허용
+                        .requestMatchers("/api/auth/**").permitAll() // 인증 요청만 허용
+                        .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 );
 
         // JWT 필터 추가

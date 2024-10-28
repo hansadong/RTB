@@ -3,9 +3,9 @@ package com.toy.rtb.controller;
 import com.toy.rtb.dto.JwtResponseDTO;
 import com.toy.rtb.dto.LoginRequestDTO;
 import com.toy.rtb.dto.SignupRequestDTO;
-import com.toy.rtb.model.Member;
+import com.toy.rtb.model.member.Member;
+import com.toy.rtb.service.auth.AuthService;
 import com.toy.rtb.service.member.MemberService;
-import com.toy.rtb.util.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private JwtUtil jwtUtil;
+    private AuthService authService;
 
     @Autowired
     private MemberService memberService;
@@ -50,17 +50,18 @@ public class AuthController {
                             loginRequest.getMemberPwd()));
 
             // 인증 성공 시 JWT 토큰 생성
-            String jwt = jwtUtil.generateJwtToken(loginRequest.getMemberId());
+            String accessToken = authService.generateAccessToken(loginRequest.getMemberId());
+            String refreshToken = authService.generateRefreshToken(loginRequest.getMemberId());
 
             UserDetails userDetails = (UserDetails) authentication.getPrincipal();
 
-            return ResponseEntity.ok(new JwtResponseDTO(jwt, userDetails.getUsername()));
+            return ResponseEntity.ok(new JwtResponseDTO(accessToken, refreshToken, userDetails.getUsername()));
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
         }
     }
 
-    // 필요 시 회원가입 엔드포인트 추가
+    // 회원가입
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(SignupRequestDTO signUpRequest) {
         // 사용자 등록 로직 구현 (이미 존재하는 사용자 체크 등)
@@ -80,8 +81,6 @@ public class AuthController {
         member.setMemberPwd(encodedPassword);
         memberService.saveMember(member);
 
-        JwtResponseDTO jwtResponseDTO = new JwtResponseDTO("test","test");
-
-        return ResponseEntity.ok(jwtResponseDTO);
+        return ResponseEntity.ok("Success: 회원 등록 성공!");
     }
 }

@@ -1,12 +1,14 @@
 package com.toy.rtb.filter;
 
-import com.toy.rtb.model.Member;
+import com.toy.rtb.model.member.Member;
 import com.toy.rtb.service.member.MemberService;
-import com.toy.rtb.util.JwtUtil;
+import com.toy.rtb.util.auth.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +21,8 @@ import java.io.IOException;
 import java.util.Collections;
 
 public class JwtAuthTokenFilter extends OncePerRequestFilter {
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     @Autowired
     private JwtUtil jwtUtil;
 
@@ -34,8 +38,13 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwt = parseJwt(request);
+            logger.info("Header Jwt Token : {}", jwt);
+
             if (jwt != null && jwtUtil.validateJwtToken(jwt)) {
+                logger.info("JWT Token Validation Check Pass!");
+
                 String memberId = jwtUtil.getUsernameFromJwtToken(jwt);
+                logger.info("JWT Token memberId : {}", memberId);
 
                 Member member = memberService.getMemberByMemberId(memberId);
                 UsernamePasswordAuthenticationToken authentication =

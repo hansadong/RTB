@@ -1,5 +1,6 @@
-package com.toy.rtb.model;
+package com.toy.rtb.model.member;
 
+import com.toy.rtb.model.common.CommonEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 @Table(name = "member")
 @Getter
 @Setter
-public class Member {
+public class Member extends CommonEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer memberSn;
