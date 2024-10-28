@@ -27,3 +27,9 @@ jwt:
 jasypt:
   encryptor:
     password: ${ENCRYPT_KEY}
+
+logging:
+  file:
+    name: /logs/rtb/rtb.log
+  level:
+    root: info
