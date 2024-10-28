@@ -30,6 +30,6 @@ jasypt:
 
 logging:
   file:
-    name: /logs/rtb/rtb.log
+    name: /docker/rtb/logs/rtb.log
   level:
     root: info
