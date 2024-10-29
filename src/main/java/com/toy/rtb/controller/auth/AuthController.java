@@ -1,4 +1,4 @@
-package com.toy.rtb.controller;
+package com.toy.rtb.controller.auth;
 
 import com.toy.rtb.dto.JwtResponseDTO;
 import com.toy.rtb.dto.LoginRequestDTO;
@@ -41,8 +41,6 @@ public class AuthController {
     // 로그인 요청 처리
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(LoginRequestDTO loginRequest) {
-        logger.info("LoginRequestDTO : {}, {}", loginRequest.getMemberId(), loginRequest.getMemberPwd());
-
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
