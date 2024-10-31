@@ -6,6 +6,7 @@ import com.toy.rtb.dto.SignupRequestDTO;
 import com.toy.rtb.model.member.Member;
 import com.toy.rtb.service.auth.AuthService;
 import com.toy.rtb.service.member.MemberService;
+import com.toy.rtb.util.auth.JwtUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,9 @@ public class AuthController {
     @Autowired
     private MemberService memberService;
 
+    @Autowired
+    private JwtUtil jwtUtil;
+
     // 로그인 요청 처리
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(LoginRequestDTO loginRequest) {
@@ -62,8 +66,6 @@ public class AuthController {
     // 회원가입
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(SignupRequestDTO signUpRequest) {
-        // 사용자 등록 로직 구현 (이미 존재하는 사용자 체크 등)
-        // 예시로 간단히 구현
         if (memberService.getMemberByMemberId(signUpRequest.getMemberId()) != null) {
             return ResponseEntity
                     .badRequest()
@@ -80,5 +82,18 @@ public class AuthController {
         memberService.saveMember(member);
 
         return ResponseEntity.ok("Success: 회원 등록 성공!");
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refreshToken(JwtResponseDTO jwtResponseDTO) {
+        // refresh 토큰 유효성 검사
+        if (jwtUtil.validateJwtToken(jwtResponseDTO.getRefreshToken())) {
+            // new access token 생성하여 응답
+            jwtResponseDTO.setAccessToken(authService.generateAccessToken(jwtResponseDTO.getMemberId()));
+            return ResponseEntity.ok(jwtResponseDTO);
+        } else {
+            // refresh 토큰 만료로 재로그인 필요
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid refresh token");
+        }
     }
 }

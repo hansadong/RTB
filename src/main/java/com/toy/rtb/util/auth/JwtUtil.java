@@ -16,7 +16,7 @@ public class JwtUtil {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    // 토큰 생성
+    // 토큰 generate
     public String generateToken(String memberId, long expirationTimeInMs, Map<String, Object> claims) {
         return createToken(claims, memberId, expirationTimeInMs);
     }
@@ -68,4 +68,5 @@ public class JwtUtil {
         }
         return false;
     }
+
 }
