@@ -40,10 +40,10 @@ public class JwtAuthTokenFilter extends OncePerRequestFilter {
             String jwt = parseJwt(request);
             logger.info("Header Jwt Token : {}", jwt);
 
-            if (jwt != null && jwtUtil.validateJwtToken(jwt)) {
+            if (jwt != null && jwtUtil.isTokenExpired(jwt)) {
                 logger.info("JWT Token Validation Check Pass!");
 
-                String memberId = jwtUtil.getUsernameFromJwtToken(jwt);
+                String memberId = jwtUtil.extractClaims(jwt).getSubject();
                 logger.info("JWT Token memberId : {}", memberId);
 
                 Member member = memberService.getMemberByMemberId(memberId);
