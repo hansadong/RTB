@@ -57,15 +57,21 @@ public class AuthController {
                             loginRequest.getMemberId(),
                             loginRequest.getMemberPwd()));
 
+            logger.info("request : {}, {}", loginRequest.getMemberId(), loginRequest.getMemberPwd());
+
             // 인증 성공 시 JWT 토큰 생성
             String accessToken = authService.generateAccessToken(loginRequest.getMemberId());
             String refreshToken = authService.generateRefreshToken(loginRequest.getMemberId());
+
+            logger.info("accessToken : {}, refreshToken : {}", accessToken, refreshToken);
 
             Cookie cookie = new Cookie(jwtCookieName, refreshToken);
             cookie.setHttpOnly(true);
             cookie.setSecure(true);
             cookie.setPath("/");
             response.addCookie(cookie);
+
+            logger.info("cookie 세팅 성공!");
 
             return ResponseEntity.ok(new JwtResponseDTO(accessToken));
         } catch (BadCredentialsException e) {
