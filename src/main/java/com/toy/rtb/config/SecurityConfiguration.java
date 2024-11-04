@@ -59,7 +59,7 @@ public class SecurityConfiguration {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowCredentials(true);
-        configuration.addAllowedOrigin("http://localhost:3000"); // 수정 필요: "*" 대신 허용할 도메인을 추가
+        configuration.addAllowedOrigin("http://recipetab.shop");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
 
