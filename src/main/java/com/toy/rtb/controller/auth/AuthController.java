@@ -1,23 +1,26 @@
 package com.toy.rtb.controller.auth;
 
 import com.toy.rtb.dto.JwtResponseDTO;
-import com.toy.rtb.dto.TokenRequestDTO;
 import com.toy.rtb.dto.SignupRequestDTO;
+import com.toy.rtb.dto.TokenRequestDTO;
 import com.toy.rtb.model.member.Member;
 import com.toy.rtb.service.auth.AuthService;
 import com.toy.rtb.service.member.MemberService;
 import com.toy.rtb.util.auth.JwtUtil;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,9 +45,12 @@ public class AuthController {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Value("${jwt.cookie-name}")
+    private String jwtCookieName;
+
     // 로그인 요청 처리
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(TokenRequestDTO loginRequest) {
+    public ResponseEntity<?> authenticateUser(TokenRequestDTO loginRequest, HttpServletResponse response) {
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -55,9 +61,13 @@ public class AuthController {
             String accessToken = authService.generateAccessToken(loginRequest.getMemberId());
             String refreshToken = authService.generateRefreshToken(loginRequest.getMemberId());
 
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            Cookie cookie = new Cookie(jwtCookieName, refreshToken);
+            cookie.setHttpOnly(true);
+            cookie.setSecure(true);
+            cookie.setPath("/");
+            response.addCookie(cookie);
 
-            return ResponseEntity.ok(new JwtResponseDTO(accessToken, refreshToken, userDetails.getUsername()));
+            return ResponseEntity.ok(new JwtResponseDTO(accessToken));
         } catch (BadCredentialsException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
         }
@@ -85,15 +95,26 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<?> refreshToken(JwtResponseDTO jwtResponseDTO) {
+    public ResponseEntity<?> refreshToken(@CookieValue(name = "${jwt.cookie-name}", required = false) String refreshToken
+            , HttpServletResponse response) {
         // refresh 토큰 유효성 검사
-        if (jwtUtil.validateJwtToken(jwtResponseDTO.getRefreshToken())) {
-            // new access token 생성하여 응답
-            jwtResponseDTO.setAccessToken(authService.generateAccessToken(jwtResponseDTO.getMemberId()));
-            return ResponseEntity.ok(jwtResponseDTO);
-        } else {
+        if (refreshToken == null || jwtUtil.isTokenExpired(refreshToken)) {
             // refresh 토큰 만료로 재로그인 필요
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid refresh token");
         }
+
+        // 리프레쉬 토큰에서 memberId 추출
+        String memberId = jwtUtil.extractClaims(refreshToken).getSubject();
+
+        // new access token 생성하여 응답
+        String newAccessToken = authService.generateAccessToken(memberId);
+
+        Cookie accessCookie = new Cookie(jwtCookieName, newAccessToken);
+        accessCookie.setHttpOnly(true);
+        accessCookie.setSecure(true);
+        accessCookie.setPath("/");
+        response.addCookie(accessCookie);
+
+        return ResponseEntity.ok(new JwtResponseDTO(newAccessToken));
     }
 }

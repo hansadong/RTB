@@ -32,41 +32,15 @@ public class JwtUtil {
                 .compact();
     }
 
-    // 토큰에서 사용자 이름 추출
-    public String getUsernameFromJwtToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(jwtSecret)
-                .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
-    }
-
-    // 토큰에서 유효기간 추출
-    public Date getExpirationMsFromJwtToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(jwtSecret)
-                .parseClaimsJws(token)
-                .getBody()
-                .getExpiration();
+    // 토큰에서 memberId 추출
+    public Claims extractClaims(String token) {
+        return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
     }
 
     // 토큰 유효성 검사
-    public boolean validateJwtToken(String authToken) {
-        try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
-            return true;
-        } catch (SignatureException e) {
-            logger.error("Invalid JWT signature: {}", e.getMessage(), e);
-        } catch (MalformedJwtException e) {
-            logger.error("Invalid JWT token: {}", e.getMessage(), e);
-        } catch (ExpiredJwtException e) {
-            logger.error("JWT token is expired: {}", e.getMessage(), e);
-        } catch (UnsupportedJwtException e) {
-            logger.error("JWT token is unsupported: {}", e.getMessage(), e);
-        } catch (IllegalArgumentException e) {
-            logger.error("JWT claims string is empty: {}", e.getMessage(), e);
-        }
-        return false;
+    public boolean isTokenExpired(String token) {
+        final Date expiration = extractClaims(token).getExpiration();
+        return expiration.before(new Date());
     }
 
 }

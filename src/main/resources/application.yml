@@ -23,6 +23,7 @@ spring:
 
 jwt:
   secret: ${JWT_SECRET_KEY}
+  cookie-name: ${JWT_COOKIE_NAME}
 
 jasypt:
   encryptor:
