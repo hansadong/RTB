@@ -20,6 +20,12 @@ public class Member extends CommonEntity {
     @Column(nullable = false)
     private String memberPwd;
 
+    @Column(nullable = false)
+    private String memberEmail;
+
+    @Column(nullable = false)
+    private String nickName;
+
     // 권한 설정
 //    @ElementCollection(fetch = FetchType.EAGER)
 //    private Set<String> roles;

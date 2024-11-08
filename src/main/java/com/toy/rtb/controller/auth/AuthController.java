@@ -82,10 +82,16 @@ public class AuthController {
     // 회원가입
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(SignupRequestDTO signUpRequest) {
-        if (memberService.getMemberByMemberId(signUpRequest.getMemberId()) != null) {
+        Member memberByMemberId = memberService.getMemberByMemberId(signUpRequest.getMemberId());
+        Member memberByNickName = memberService.getMemberByNickName(signUpRequest.getNickName());
+        if (memberByMemberId != null) {
             return ResponseEntity
                     .badRequest()
                     .body("Error: 이미 사용 중인 아이디입니다.");
+        } else if (memberByNickName != null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Error: 이미 사용 중인 닉네임입니다.");
         }
 
         // 패스워드 인코딩

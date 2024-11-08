@@ -40,4 +40,8 @@ public class MemberServiceImpl implements MemberService, UserDetailsService {
     public Member getMemberByMemberId(String memberId) {
         return memberRepository.getMemberByMemberId(memberId);
     }
+
+    public Member getMemberByNickName(String nickName) {
+        return memberRepository.getMemberByNickName(nickName);
+    }
 }
