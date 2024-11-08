@@ -101,6 +101,8 @@ public class AuthController {
         Member member = new Member();
         member.setMemberId(signUpRequest.getMemberId());
         member.setMemberPwd(encodedPassword);
+        member.setMemberEmail(signUpRequest.getMemberEmail());
+        member.setNickName(signUpRequest.getNickName());
         memberService.saveMember(member);
 
         return ResponseEntity.ok("Success: 회원 등록 성공!");
