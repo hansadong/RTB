@@ -1,8 +1,8 @@
 package com.toy.rtb.controller.auth;
 
-import com.toy.rtb.dto.JwtResponseDTO;
-import com.toy.rtb.dto.SignupRequestDTO;
-import com.toy.rtb.dto.TokenRequestDTO;
+import com.toy.rtb.dto.member.JwtResponseDTO;
+import com.toy.rtb.dto.member.SignupRequestDTO;
+import com.toy.rtb.dto.member.TokenRequestDTO;
 import com.toy.rtb.model.member.Member;
 import com.toy.rtb.service.auth.AuthService;
 import com.toy.rtb.service.member.MemberService;

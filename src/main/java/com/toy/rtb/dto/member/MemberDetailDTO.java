@@ -1,4 +1,4 @@
-package com.toy.rtb.dto;
+package com.toy.rtb.dto.member;
 
 public class MemberDetailDTO {
 }
