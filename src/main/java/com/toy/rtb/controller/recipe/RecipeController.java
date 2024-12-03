@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/recipe")
+@RequestMapping("/api/recipe")
 public class RecipeController {
     private RecipeService recipeService;
 
