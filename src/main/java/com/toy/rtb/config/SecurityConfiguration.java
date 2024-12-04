@@ -45,7 +45,7 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 // 권한 설정
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/**/**").permitAll() // 인증 요청만 허용
+                        .requestMatchers("/api/**").permitAll() // 인증 요청만 허용
                         .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 );
 
