@@ -62,4 +62,4 @@ jobs:
           echo "${{ secrets.DOCKER_PWD }}" | sudo docker login -u "${{ secrets.DOCKER_NAME }}" --password-stdin
           sudo docker rm -f rtb-container
           sudo docker pull ${{ secrets.DOCKER_REPO }}:latest
-          sudo docker run --init -e ENCRYPT_KEY=${{ env.ENCRYPT_KEY }} -e JWT_SECRET_KEY=${{ env.JWT_SECRET_KEY }} -e JWT_COOKIE_NAME=${{ env.JWT_COOKIE_NAME }} -d --name rtb-container --network rt_network -p 8080:8080 -v /var/log/rtb/:/logs ${{ secrets.DOCKER_REPO }}:latest
+          sudo docker run --init -e TZ=Asia/Seoul -e ENCRYPT_KEY=${{ env.ENCRYPT_KEY }} -e JWT_SECRET_KEY=${{ env.JWT_SECRET_KEY }} -e JWT_COOKIE_NAME=${{ env.JWT_COOKIE_NAME }} -d --name rtb-container --network rt_network -p 8080:8080 -v /var/log/rtb/:/logs ${{ secrets.DOCKER_REPO }}:latest
