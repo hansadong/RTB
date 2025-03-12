@@ -20,7 +20,7 @@ public class RecipeIngredients extends CommonEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String ingredientSn;
+    private int ingredientSn;
 
     @Column(nullable = false)
     private String quantity;

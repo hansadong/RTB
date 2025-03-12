@@ -1,13 +1,15 @@
 package com.toy.rtb.dto.recipe;
 
 import com.toy.rtb.model.recipe.Recipes;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class RecipeResponseDTO {
     private List<Recipes> recipeList;
 }
